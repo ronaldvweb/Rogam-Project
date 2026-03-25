@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  rogam-engine:
+    build: ./rogam-server
+    container_name: rogam_backend
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Permite acessar o Postgres do Windows
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=SUA_SENHA_DO_POSTGRES
+      - DB_NAME=rogam_db
+    restart: always

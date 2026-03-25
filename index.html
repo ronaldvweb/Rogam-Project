@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rogam Analytics - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 p-10">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+      <h1 class="text-3xl font-bold text-blue-600 mb-6">Rogam Yield Monitor</h1>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="p-3 border">Bidder</th>
+              <th class="p-3 border text-center">Leilões</th>
+              <th class="p-3 border text-center">CPM Médio ($)</th>
+              <th class="p-3 border text-center">Latência (ms)</th>
+            </tr>
+          </thead>
+          <tbody id="stats-table"></tbody>
+        </table>
+      </div>
+      <button
+        onclick="loadStats()"
+        class="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-700"
+      >
+        Atualizar Dados
+      </button>
+    </div>
+
+    <script>
+      async function loadStats() {
+        // Em um sistema real, buscaríamos o token salvo no login
+        const token = "SEU_TOKEN_AQUI";
+
+        try {
+          const response = await fetch("http://localhost:3000/v1/stats", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, // Enviando o crachá!
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) throw new Error("Acesso não autorizado");
+
+          const result = await response.json();
+          // ... restante da lógica de preencher a tabela ...
+        } catch (error) {
+          console.error("Erro de Autenticação:", error);
+          alert("Sessão expirada ou não autorizada!");
+        }
+      }
+      loadStats(); // Carrega ao abrir a página
+      // Atualiza os dados automaticamente a cada 5 segundos
+      //setInterval(loadStats, 5000);
+    </script>
+  </body>
+</html>
